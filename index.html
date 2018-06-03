@@ -38,9 +38,10 @@
 
 
     <script type="text/javascript">
+    var searchArray = ['Honda', 'Suzuki', 'KTM', 'Triumph', 'Harley Davidson'];
         $(document).ready(function () {
             //array to hold user inputs
-            var searchArray = ['Honda', 'Suzuki', 'KTM', 'Triumph', 'Harley Davidson'];
+            
 
             // click function to implement ajax call
             $('button').on('click', function () {
@@ -69,33 +70,31 @@
                             gifDiv.append(gifImage);
                             $('#gifView').prepend(gifDiv);
                         }
-                        });
+                    });
+            })
 
-
-                        function addButton() {
-                            $('#btnDiv').empty();
-                            for (var i = 0; i < searchArray.length; i++) {
-                                var newBtn = $('<button>');
-                                newBtn.addClass('btn btn-secondary');
-                                newBtn.attr('value', 'searchArray[i]');
-                                newBtn.text(searchArray[i]);
-                                $('#btnDiv').append(newBtn);
-                            }
-                        }
-
-                            $('#submit').click(function (event) {
-                                event.preventDefault();
-                                $('#gifView').empty();
-                                var userInput = $('#typeHere').val().trim();
-                                searchArray.push(userInput);
-                                addButton();
-                            });
-                        
-                    
-                    })
-                    
-            });
         });
+
+        function addButton() {
+            $('#btnDiv').empty();
+            for (var i = 0; i < searchArray.length; i++) {
+                var newBtn = $('<button>');
+                newBtn.addClass('btn btn-secondary');
+                newBtn.attr('value', 'searchArray[i]');
+                newBtn.text(searchArray[i]);
+                $('#btnDiv').append(newBtn);
+            }
+        }
+
+        $('#submit').click(function (event) {
+            event.preventDefault();
+            $('#gifView').empty();
+            var userInput = $('#typeHere').val().trim();
+            searchArray.push(userInput);
+            addButton();
+        });
+
+    
     </script>
 </body>
 
