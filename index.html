@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Gif Site</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12" id='btnDiv'>
+                <button type="button" class="btn btn-secondary" value="honda">Honda</button>
+                <button type="button" class="btn btn-secondary" value="suzuki">Suzuki</button>
+                <button type="button" class="btn btn-secondary" value="ktm">KTM</button>
+                <button type="button" class="btn btn-secondary" value="triumph">Triumph</button>
+                <button type="button" class="btn btn-secondary" value="harley">Harley Davidson</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-8" id="gifView"></div>
+            <div class="col-lg-4" id="searchDiv">
+                <form id="form">
+                    <label id="inputBox">Enter your search:</label>
+                    <br>
+                    <input type="textarea" id="typeHere">
+                    <br>
+                    <br>
+                    <input id="submit" type="submit" value="submit">
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //array to hold user inputs
+            var searchArray = ['Honda', 'Suzuki', 'KTM', 'Triumph', 'Harley Davidson'];
+
+            // click function to implement ajax call
+            $('button').on('click', function () {
+                var userRequest = $(this).attr('value');
+                var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+                    userRequest + "&api_key=TuCm7hXy6OApBA1WR0dXXlGjHFj7yfjK&limit=10";
+
+                // call to get the response
+                $.ajax({
+                    url: queryURL,
+                    method: "GET"
+                })
+
+                    .then(function (response) {
+
+                        var returned = response.data;
+
+                        for (var i = 0; i < returned.length; i++) {
+                            var gifDiv = $('<div>');
+                            var rating = returned[i].rating;
+                            var para = $('<p>').text('Rating: ' + rating);
+                            var gifImage = $('<img>');
+
+                            gifImage.attr('src', returned[i].images.fixed_height.url);
+                            gifDiv.append(para);
+                            gifDiv.append(gifImage);
+                            $('#gifView').prepend(gifDiv);
+                        }
+
+
+                        function addButton() {
+                            $('#btnDiv').empty();
+                            for (var i = 0; i < searchArray.length; i++) {
+                                var newBtn = $('<button>');
+                                newBtn.addClass('btn btn-secondary');
+                                newBtn.attr('value', 'searchArray[i]');
+                                newBtn.text('searchArray[i]');
+                                $('#btnDiv').append(newBtn);
+                            }
+                        }
+
+                            $('#submit').click(function (event) {
+                                event.preventDefault();
+                                $('#gifView').empty();
+                                var userInput = $('#typeHere').val().trim();
+                                searchArray.push(userInput);
+                                addButton();
+                            });
+                        
+                    
+                    });
+                    
+            });
+        });
+    </script>
+</body>
+
+</html>
